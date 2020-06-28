@@ -28,19 +28,22 @@
                 "summary": "return all books",
                 "responses": {
                     "200": {
-                        "description": "Read",
+                        "description": "Books retrieved",
                         "schema": {
-                            "type": "string"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Book"
+                            }
                         }
                     },
                     "400": {
-                        "description": "input",
+                        "description": "Bad JSON",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "JSON unmarshal",
+                        "description": "JSON unmarshal error",
                         "schema": {
                             "type": "string"
                         }
@@ -61,66 +64,30 @@
                 "summary": "create a new book",
                 "parameters": [
                     {
-                        "description": "Stock Keeping Unit",
-                        "name": "sku",
+                        "description": "The book",
+                        "name": "book",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The name of the book",
-                        "name": "name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The author's name",
-                        "name": "author",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The book's description",
-                        "name": "description",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "default": "0",
-                        "description": "The book's value",
-                        "name": "price",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Book"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Created",
+                        "description": "Book creates",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Book"
                         }
                     },
                     "400": {
-                        "description": "input",
+                        "description": "Bad JSON",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "JSON unmarshal",
+                        "description": "JSON unmarshal error",
                         "schema": {
                             "type": "string"
                         }
@@ -149,19 +116,19 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Read",
+                        "description": "Book retrived",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Book"
                         }
                     },
                     "400": {
-                        "description": "input",
+                        "description": "Bad JSON",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "JSON unmarshal",
+                        "description": "JSON unmarshal error",
                         "schema": {
                             "type": "string"
                         }
@@ -182,68 +149,37 @@
                 "summary": "update a book",
                 "parameters": [
                     {
-                        "description": "Stock Keeping Unit",
-                        "name": "sku",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The name of the book",
-                        "name": "name",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The author's name",
-                        "name": "author",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The book's description",
-                        "name": "description",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "The book's value",
-                        "name": "price",
-                        "in": "body",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
                         "type": "integer",
                         "description": "Book ID",
                         "name": "id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "The book",
+                        "name": "book",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Book"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Updated",
+                        "description": "Book updated",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Book"
                         }
                     },
                     "400": {
-                        "description": "input",
+                        "description": "Bad JSON",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "JSON unmarshal",
+                        "description": "JSON unmarshal error",
                         "schema": {
                             "type": "string"
                         }
@@ -270,23 +206,57 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Deleted",
+                        "description": "Book deleted",
                         "schema": {
-                            "type": "string"
+                            "$ref": "#/definitions/models.Book"
                         }
                     },
                     "400": {
-                        "description": "input",
+                        "description": "Bad JSON",
                         "schema": {
                             "type": "string"
                         }
                     },
                     "500": {
-                        "description": "JSON unmarshal",
+                        "description": "JSON unmarshal error",
                         "schema": {
                             "type": "string"
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Book": {
+            "type": "object",
+            "properties": {
+                "author": {
+                    "type": "string"
+                },
+                "createdAt": {
+                    "type": "string"
+                },
+                "deletedAt": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "price": {
+                    "type": "number"
+                },
+                "sku": {
+                    "type": "string"
+                },
+                "updatedAt": {
+                    "type": "string"
                 }
             }
         }

@@ -16,15 +16,11 @@ import (
 // @Description validate a new book and insert it into the database
 // @Tags books
 // @Accept json
-// @Param sku body string true "Stock Keeping Unit" validate(required)
-// @Param name body string true "The name of the book" validate(required)
-// @Param author body string true "The author's name" validate(required)
-// @Param description body string false "The book's description"
-// @Param price body string true "The book's value" validate(required) default(0) minimum(0)
 // @Produce json
-// @Success 200 {string} Book "Created"
-// @Failure 400 {string} string "input"
-// @Failure 500 {string} string "JSON unmarshal"
+// @Param book body models.Book true "The book" validate(required)
+// @Success 200 {object} models.Book "Book creates"
+// @Failure 400 {string} string "Bad JSON"
+// @Failure 500 {string} string "JSON unmarshal error"
 // @Router /books [post]
 func NewBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request) {
 	r.Header.Set("Content-Type", "application/json")
@@ -50,11 +46,11 @@ func NewBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request)
 
 	// success
 	l.Printf("[NEW] %s (%s)\n", b.Author, b.Name)
+	w.WriteHeader(200)
 	if err := b.ToJSON(w); err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	w.WriteHeader(200)
 }
 
 // GetBook godoc
@@ -63,9 +59,9 @@ func NewBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request)
 // @Tags books
 // @Produce json
 // @Param id path int true "Book ID"
-// @Success 200 {string} Book "Read"
-// @Failure 400 {string} string "input"
-// @Failure 500 {string} string "JSON unmarshal"
+// @Success 200 {object} models.Book "Book retrived"
+// @Failure 400 {string} string "Bad JSON"
+// @Failure 500 {string} string "JSON unmarshal error"
 // @Router /books/{id} [get]
 func GetBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request) {
 
@@ -86,11 +82,11 @@ func GetBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request)
 
 	// success
 	l.Printf("[SEARCHED] %s (%s)\n", b.Author, b.Name)
+	w.WriteHeader(200)
 	if err := b.ToJSON(w); err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	w.WriteHeader(200)
 }
 
 // GetAllBooks godoc
@@ -98,9 +94,9 @@ func GetBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request)
 // @Description find all books in the database and serve it
 // @Tags books
 // @Produce json
-// @Success 200 {string} Books "Read"
-// @Failure 400 {string} string "input"
-// @Failure 500 {string} string "JSON unmarshal"
+// @Success 200 {object} models.Books "Books retrieved"
+// @Failure 400 {string} string "Bad JSON"
+// @Failure 500 {string} string "JSON unmarshal error"
 // @Router /books [get]
 func GetAllBooks(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request) {
 
@@ -113,11 +109,11 @@ func GetAllBooks(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Requ
 
 	// success
 	l.Printf("[SEARCHED] ALL\n")
+	w.WriteHeader(200)
 	if err := bs.ToJSON(w); err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	w.WriteHeader(200)
 }
 
 // UpdateBook godoc
@@ -125,16 +121,12 @@ func GetAllBooks(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Requ
 // @Description find a book and update it with new values
 // @Tags books
 // @Accept json
-// @Param sku body string false "Stock Keeping Unit"
-// @Param name body string false "The name of the book"
-// @Param author body string false "The author's name"
-// @Param description body string false "The book's description"
-// @Param price body string false "The book's value" minimum(0)
 // @Produce json
 // @Param id path int true "Book ID"
-// @Success 200 {string} Book "Updated"
-// @Failure 400 {string} string "input"
-// @Failure 500 {string} string "JSON unmarshal"
+// @Param book body models.Book true "The book" validate(required)
+// @Success 200 {object} models.Book "Book updated"
+// @Failure 400 {string} string "Bad JSON"
+// @Failure 500 {string} string "JSON unmarshal error"
 // @Router /books/{id} [put]
 func UpdateBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request) {
 	r.Header.Set("Content-Type", "application/json")
@@ -162,11 +154,11 @@ func UpdateBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Reque
 	}
 	// success
 	l.Printf("[UPDATED] %s (%s)\n", b.Author, b.Name)
+	w.WriteHeader(200)
 	if err := b.ToJSON(w); err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	w.WriteHeader(200)
 }
 
 // RemoveBook godoc
@@ -175,9 +167,9 @@ func UpdateBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Reque
 // @Tags books
 // @Produce json
 // @Param id path int true "Book ID"
-// @Success 200 {string} Book "Deleted"
-// @Failure 400 {string} string "input"
-// @Failure 500 {string} string "JSON unmarshal"
+// @Success 200 {object} models.Book "Book deleted"
+// @Failure 400 {string} string "Bad JSON"
+// @Failure 500 {string} string "JSON unmarshal error"
 // @Router /books/{id} [delete]
 func RemoveBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Request) {
 
@@ -202,9 +194,9 @@ func RemoveBook(db *gorm.DB, l *log.Logger, w http.ResponseWriter, r *http.Reque
 
 	// success
 	l.Printf("[DELETED] %s (%s)\n", b.Author, b.Name)
+	w.WriteHeader(200)
 	if err := b.ToJSON(w); err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	w.WriteHeader(200)
 }

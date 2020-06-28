@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"tommychu/workdir/026_api-example/app"
 	"tommychu/workdir/026_api-example/config"
+	_ "tommychu/workdir/026_api-example/docs"
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
@@ -17,13 +19,12 @@ import (
 // @Host localhost:8081
 // @BasePath /
 // @Schemes http
-
 func main() {
 	cfg := config.GetConfig()
 
-	app := app.NewApp()
-	defer app.DB.Close()
+	a := app.NewApp()
+	defer a.DB.Close()
 
-	app.Initialize(cfg)
-	app.Run(":8081")
+	a.Initialize(cfg)
+	a.Run(fmt.Sprintf(":%d", a.Port))
 }

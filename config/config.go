@@ -7,13 +7,15 @@ import (
 
 // Config is a setting of the App.
 type Config struct {
-	DB  *DBconfig
-	Log *LogConfig
+	Port int
+	DB   *DBconfig
+	Log  *LogConfig
 }
 
 // GetConfig returns an App configuration.
 func GetConfig() *Config {
 	return &Config{
+		Port: 8081,
 		DB: &DBconfig{
 			Host:     "localhost",
 			DBname:   "project_00",

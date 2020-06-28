@@ -14,6 +14,7 @@ import (
 // App contains everything needed
 // to run the API properly
 type App struct {
+	Port   int
 	Logger *log.Logger
 	Router *mux.Router
 	DB     *gorm.DB
@@ -29,6 +30,9 @@ func (a *App) Initialize(config *config.Config) {
 
 	// set logging config
 	a.Logger = config.Log.Logger
+
+	// set PORT
+	a.Port = config.Port
 
 	// set database config
 	dbURI := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",

@@ -3,13 +3,20 @@ package models
 import (
 	"encoding/json"
 	"io"
-
-	"github.com/jinzhu/gorm"
+	"time"
 )
+
+// Model is a copy of the gorm.Model
+type Model struct {
+	ID        uint `gorm:"primary_key"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
+}
 
 // Book is a product.
 type Book struct {
-	gorm.Model
+	Model
 	SKU         string  `json:"sku" gorm:"not null;unique"`
 	Name        string  `json:"name" gorm:"not null;unique"`
 	Author      string  `json:"author" gorm:"not null"`
