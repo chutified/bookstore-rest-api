@@ -1,0 +1,39 @@
+
+http://localhost:8080
+Content-Type: application/json
+POST /books
+{
+    "sku":"414d3r123r",
+    "name":"1984",
+    "author":"George Orwell",
+    "description":"O spolecnosti",
+    "price":89.90
+}
+
+http://localhost:8080
+Content-Type: application/json
+POST /books
+{
+    "sku":"jfi30gj9irj",
+    "name":"Harry Potter a kamen mudrcu",
+    "author":"JK Rowling",
+    "description":"O carodejovi",
+    "price":119.90
+}
+
+http://localhost:8080
+GET /books/1
+
+http://localhost:8080
+GET /books
+
+http://localhost:8080
+Content-Type: application/json
+PUT /books/2
+{
+    #"price":109.90
+    "author":"J. K. Rowling"
+}
+
+http://localhost:8080
+DELETE /books/1
