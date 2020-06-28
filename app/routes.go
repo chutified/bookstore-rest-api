@@ -20,7 +20,7 @@ func (a *App) setRouter() {
 	a.Router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
 		httpSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", a.Port)),
 		httpSwagger.DeepLinking(true),
-		httpSwagger.DocExpansion("none"),
+		httpSwagger.DocExpansion("list"),
 		httpSwagger.DomID("#swagger-ui"),
 	),
 	)
