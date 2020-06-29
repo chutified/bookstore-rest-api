@@ -1,0 +1,52 @@
+// GET all
+http://localhost:8081/api/v2
+Content-Type: application/json
+-i
+GET /books
+
+// GET by id
+http://localhost:8081/api/v2
+-i
+Content-Type: application/json
+GET /books/1
+
+// CREATE 1
+http://localhost:8081/api/v2
+-i
+Content-Type: application/json
+POST /books
+{
+"sku":"123",
+"title":"Harry Potter a kamen mudrcu",
+"author":"J. K. Rowling",
+"description":"O sutru.",
+"price":129.90
+}
+
+// CREATE 2
+http://localhost:8081/api/v2
+-i
+Content-Type: application/json
+POST /books
+{
+"sku":"759",
+"title":"Harry Potter a ohnivy pohar",
+"author":"J. K. Rowling",
+"description":"O poharu.",
+"price":119.90
+}
+
+// UPDATE
+http://localhost:8081/api/v2
+-i
+Content-Type: application/json
+PUT /books/12
+{
+    "sku":"12"
+}
+
+// DELETE
+http://localhost:8081/api/v2
+-i
+Content-Type: application/json
+DELETE /books/12

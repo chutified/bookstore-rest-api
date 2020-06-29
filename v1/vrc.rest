@@ -1,5 +1,5 @@
 
-http://localhost:8080
+http://localhost:8081
 Content-Type: application/json
 POST /books
 {
@@ -10,7 +10,7 @@ POST /books
     "price":89.90
 }
 
-http://localhost:8080
+http://localhost:8081
 Content-Type: application/json
 POST /books
 {
@@ -21,13 +21,14 @@ POST /books
     "price":119.90
 }
 
-http://localhost:8080
+http://localhost:8081
 GET /books/1
 
-http://localhost:8080
+http://localhost:8081
+-i
 GET /books
 
-http://localhost:8080
+http://localhost:8081
 Content-Type: application/json
 PUT /books/2
 {
@@ -35,5 +36,5 @@ PUT /books/2
     "author":"J. K. Rowling"
 }
 
-http://localhost:8080
-DELETE /books/1
+http://localhost:8081
+DELETE /books/6
