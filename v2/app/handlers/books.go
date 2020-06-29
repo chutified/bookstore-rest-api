@@ -130,3 +130,25 @@ func RemoveBook(c *gin.Context) {
 		"delete_book_id": id,
 	})
 }
+
+// RecoverBook recovers deleted book by its ID.
+func RecoverBook(c *gin.Context) {
+	db := c.Value("db").(*gorm.DB)
+
+	// get id
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(400, errToJSON(err))
+		return
+	}
+
+	// recover book
+	book, errs := services.RecoverBook(db, id)
+	if len(errs) != 0 {
+		c.JSON(400, errToJSON(errs...))
+		return
+	}
+
+	// success
+	c.JSON(200, book)
+}

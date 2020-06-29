@@ -1,18 +1,15 @@
 // GET all
 http://localhost:8081/api/v2
 Content-Type: application/json
--i
 GET /books
 
 // GET by id
 http://localhost:8081/api/v2
--i
 Content-Type: application/json
 GET /books/1
 
 // CREATE 1
 http://localhost:8081/api/v2
--i
 Content-Type: application/json
 POST /books
 {
@@ -25,7 +22,6 @@ POST /books
 
 // CREATE 2
 http://localhost:8081/api/v2
--i
 Content-Type: application/json
 POST /books
 {
@@ -38,15 +34,18 @@ POST /books
 
 // UPDATE
 http://localhost:8081/api/v2
--i
 Content-Type: application/json
-PUT /books/12
+PUT /books/2
 {
-    "sku":"12"
+    "description":"O poharu."
 }
 
 // DELETE
 http://localhost:8081/api/v2
--i
 Content-Type: application/json
-DELETE /books/12
+DELETE /books/1
+
+// RECOVER
+http://localhost:8081/api/v2
+Content-Type: application/json
+POST /books/2/recover

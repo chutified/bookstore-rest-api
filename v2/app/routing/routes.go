@@ -31,6 +31,7 @@ func GetRouter(cfg *config.Config, db *gorm.DB) *gin.Engine {
 		v2.POST("/books", handlers.NewBook)
 		v2.PUT("/books/:id", handlers.UpdateBook)
 		v2.DELETE("/books/:id", handlers.RemoveBook)
+		v2.POST("/books/:id/recover", handlers.RecoverBook)
 	}
 
 	return r

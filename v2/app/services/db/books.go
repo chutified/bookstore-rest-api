@@ -47,11 +47,21 @@ func UpdateBook(db *gorm.DB, id int, book models.Book) (models.Book, []error) {
 	if len(errs) != 0 {
 		return models.Book{}, errs
 	}
-	return book, db.Model(changing).Updates(book).GetErrors()
+	errs = db.Model(&changing).Updates(book).GetErrors()
+	return changing, errs
 }
 
 // DeleteBook marks the book as deleted.
 func DeleteBook(db *gorm.DB, id int) []error {
 	var book models.Book
 	return db.Delete(&book, id).GetErrors()
+}
+
+func RecoverBook(db *gorm.DB, id int) (models.Book, []error) {
+	var book models.Book
+	errs := db.Unscoped().Where("id = ?", id).First(&book).Update("deleted_at", nil).GetErrors()
+	if len(errs) != 0 {
+		return models.Book{}, errs
+	}
+	return book, nil
 }
