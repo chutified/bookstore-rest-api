@@ -1,10 +1,20 @@
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"time"
+)
+
+// Model is a copy of the gorm.Model struct (for the purpose of documentation).
+type Model struct {
+	ID        uint `gorm:"primary_key"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt *time.Time `sql:"index"`
+}
 
 // Book is a bookstore product struct.
 type Book struct {
-	gorm.Model
+	Model
 	SKU         *string  `json:"sku,omitempty" gorm:"not null;unique"`
 	Title       *string  `json:"title,omitempty" gorm:"not null"`
 	Author      *string  `json:"author,omitempty" gorm:"not null"`

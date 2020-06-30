@@ -15,7 +15,7 @@ import (
 // @Produce json
 // @Success 200 {array} models.Book "listed - ok"
 // @Failure 500 {object} models.AppErrors "internal error"
-// @Router /api/v1/books [get]
+// @Router /books [get]
 func GetAllBooks(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
@@ -38,7 +38,7 @@ func GetAllBooks(c *gin.Context) {
 // @Success 200 {object} models.Book "got - ok"
 // @Failure 400 {object} models.AppErrors "bad request"
 // @Failure 500 {object} models.AppErrors "internal error"
-// @Router /api/v1/books/{id} [get]
+// @Router /books/{id} [get]
 func GetBook(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
@@ -69,9 +69,10 @@ func GetBook(c *gin.Context) {
 // @Description Create a new book with unique SKU.
 // @Accept json
 // @Produce json
-// @Success 200 {object} model.Book "book created - ok"
-// @Failure 400 {object} model.AppErrors "bad request"
-// @Router /api/v1/books [post]
+// @Param book body models.Book true "book struct"
+// @Success 200 {object} models.Book "book created - ok"
+// @Failure 400 {object} models.AppErrors "bad request"
+// @Router /books [post]
 func NewBook(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
@@ -104,9 +105,10 @@ func NewBook(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Param id path int true "book id"
-// @Success 200 {object} model.Book "updated - ok"
+// @Param book body models.Book true "book struct"
+// @Success 200 {object} models.Book "updated - ok"
 // @Failure 400 {object} models.AppErrors "bad request"
-// @Router /api/v1/books/{id} [put]
+// @Router /books/{id} [put]
 func UpdateBook(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
@@ -143,7 +145,7 @@ func UpdateBook(c *gin.Context) {
 // @Param id path int true "book id"
 // @Success 200 {string} string "deleted book id - ok"
 // @Failure 400 {object} models.AppErrors "bad request"
-// @Router /api/v1/books/{id} [delete]
+// @Router /books/{id} [delete]
 func RemoveBook(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
@@ -174,7 +176,7 @@ func RemoveBook(c *gin.Context) {
 // @Param id path int true "book id"
 // @Success 200 {object} models.Book "recovered - ok"
 // @Failure 400 {object} models.AppErrors "bad request"
-// @Router /api/v1/books/{id}/recover [post]
+// @Router /books/{id}/recover [post]
 func RecoverBook(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 

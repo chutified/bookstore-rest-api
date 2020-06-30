@@ -5,6 +5,10 @@ import (
 	"tommychu/workdir/027_api-example-v2/config"
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
+
+	_ "tommychu/workdir/027_api-example-v2/docs"
 )
 
 // @Title Bookstore API example with Gin
@@ -24,6 +28,10 @@ func main() {
 	a := app.New()
 	a.Initialize(cfg)
 	defer a.Close()
+
+	// documentation
+	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json") // The url pointing to API definition
+	a.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	a.Run()
 }

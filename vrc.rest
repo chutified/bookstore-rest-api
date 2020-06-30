@@ -6,7 +6,7 @@ GET /books
 // GET one by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-GET /books/1
+GET /books/26
 
 // CREATE 1
 http://localhost:8081/api/v1
@@ -35,17 +35,17 @@ POST /books
 // UPDATE by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-PUT /books/1
+PUT /books/26
 {
-    "description":"O poharu."
+    "author":"Emily Bronteova"
 }
 
 // DELETE by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-DELETE /books/1
+DELETE /books/2
 
 // RECOVER by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-POST /books/1/recover
+POST /books/2/recover

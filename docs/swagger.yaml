@@ -1,0 +1,177 @@
+basePath: /api/v1
+definitions:
+  models.AppErrors:
+    properties:
+      errors:
+        items:
+          type: string
+        type: array
+    type: object
+  models.Book:
+    properties:
+      author:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      price:
+        type: number
+      sku:
+        type: string
+      title:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: tommychu2256@gmail.com
+    name: Tommy Chu
+  description: This is a sample of a Gin API framework.
+  license: {}
+  title: Bookstore API example with Gin
+  version: "1.0"
+paths:
+  /books:
+    get:
+      description: Get all books from the database that are not marked as deleted.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: listed - ok
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+      summary: List books
+    post:
+      consumes:
+      - application/json
+      description: Create a new book with unique SKU.
+      parameters:
+      - description: book struct
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: book created - ok
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+      summary: Create book
+  /books/{id}:
+    delete:
+      description: Find a book by its ID and deletes it.
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: deleted book id - ok
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+      summary: Delete book.
+    get:
+      description: Get a book by its ID that is not marked as deleted.
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: got - ok
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+        "500":
+          description: internal error
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+      summary: Get a book
+    put:
+      consumes:
+      - application/json
+      description: Find a book by its ID and update it with changed fields.
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: book struct
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: updated - ok
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+      summary: Update book
+  /books/{id}/recover:
+    post:
+      description: Find a book by its ID and remove a deleted tag from it.
+      parameters:
+      - description: book id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: recovered - ok
+          schema:
+            $ref: '#/definitions/models.Book'
+        "400":
+          description: bad request
+          schema:
+            $ref: '#/definitions/models.AppErrors'
+      summary: Recover deleted book
+schemes:
+- http
+swagger: "2.0"
