@@ -7,15 +7,15 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-// @title Bookstore API example with Gin
-// @version 1.0
-// @description This is a sample of a Gin API framework.
+// @Title Bookstore API example with Gin
+// @Version 1.0
+// @Description This is a sample of a Gin API framework.
 
-// @contact.name Tommy Chu
-// @contact.email tommychu2256@gmail.com
+// @Contact.name Tommy Chu
+// @Contact.email tommychu2256@gmail.com
 
-// @schemes http
-// @host localhost:8081
+// @Schemes http
+// @Host localhost:8081
 // @BasePath /api/v1
 func main() {
 	cfg := config.GetConfig()

@@ -1,22 +1,15 @@
 package handlers
 
 import (
-	"fmt"
-
-	"github.com/gin-gonic/gin"
+	"tommychu/workdir/027_api-example-v2/app/models"
 )
 
-// errToJSON returns errors in JSON.
-func errToJSON(errs ...error) gin.H {
-	if len(errs) == 1 {
-		return gin.H{
-			"error": errs[0].Error(),
-		}
-	}
+// handleErrs returns errors in AppErrors.
+func handleErrs(errs ...error) models.AppErrors {
 
-	m := make(gin.H)
-	for i, err := range errs {
-		m[fmt.Sprintf("error-%d", i)] = err.Error()
+	var result models.AppErrors
+	for _, err := range errs {
+		result.Errors = append(result.Errors, err.Error())
 	}
-	return m
+	return result
 }

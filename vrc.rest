@@ -1,27 +1,27 @@
 // GET all
-http://localhost:8081/api/v2
+http://localhost:8081/api/v1
 Content-Type: application/json
 GET /books
 
 // GET one by id
-http://localhost:8081/api/v2
+http://localhost:8081/api/v1
 Content-Type: application/json
-GET /books/2
+GET /books/1
 
 // CREATE 1
-http://localhost:8081/api/v2
+http://localhost:8081/api/v1
 Content-Type: application/json
 POST /books
 {
-"sku":"123",
+"sku":"113",
 "title":"Harry Potter a kamen mudrcu",
 "author":"J. K. Rowling",
 "description":"O sutru.",
-"price":129.90
+"price":119.90
 }
 
-// CREATE 2
-http://localhost:8081/api/v2
+// CREATE 1
+http://localhost:8081/api/v1
 Content-Type: application/json
 POST /books
 {
@@ -33,19 +33,19 @@ POST /books
 }
 
 // UPDATE by id
-http://localhost:8081/api/v2
+http://localhost:8081/api/v1
 Content-Type: application/json
-PUT /books/2
+PUT /books/1
 {
     "description":"O poharu."
 }
 
 // DELETE by id
-http://localhost:8081/api/v2
+http://localhost:8081/api/v1
 Content-Type: application/json
 DELETE /books/1
 
 // RECOVER by id
-http://localhost:8081/api/v2
+http://localhost:8081/api/v1
 Content-Type: application/json
-POST /books/2/recover
+POST /books/1/recover
