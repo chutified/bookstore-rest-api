@@ -13,13 +13,13 @@ func DBMigrate(db *gorm.DB) *gorm.DB {
 	return db
 }
 
-// ReadAllBooks finds all books in the database and returns them.
+// ReadAllBooks gets all books.
 func ReadAllBooks(db *gorm.DB) ([]models.Book, []error) {
 	var books []models.Book
 	return books, db.Find(&books).GetErrors()
 }
 
-// ReadBook finds a books with a specific ID.
+// ReadBook finds a one specific book.
 func ReadBook(db *gorm.DB, id int) (models.Book, []error, error) {
 	var book models.Book
 	errs := db.First(&book, id).GetErrors()
@@ -32,7 +32,7 @@ func ReadBook(db *gorm.DB, id int) (models.Book, []error, error) {
 	return book, nil, nil
 }
 
-// CreateBook adds a new book into the database.
+// CreateBook creates a new book.
 func CreateBook(db *gorm.DB, book models.Book) (models.Book, []error, error) {
 	if !db.NewRecord(book) {
 		return models.Book{}, nil, fmt.Errorf("this book already exists: %v", book)
@@ -40,7 +40,7 @@ func CreateBook(db *gorm.DB, book models.Book) (models.Book, []error, error) {
 	return book, db.Create(&book).GetErrors(), nil
 }
 
-// UpdateBook updates chenged fields.
+// UpdateBook updates the book with th changed fields.
 func UpdateBook(db *gorm.DB, id int, book models.Book) (models.Book, []error) {
 	var changing models.Book
 	errs := db.First(&changing, id).GetErrors()
@@ -57,6 +57,7 @@ func DeleteBook(db *gorm.DB, id int) []error {
 	return db.Delete(&book, id).GetErrors()
 }
 
+// RecoverBook removes the deleted timestamp from the book record.
 func RecoverBook(db *gorm.DB, id int) (models.Book, []error) {
 	var book models.Book
 	errs := db.Unscoped().Where("id = ?", id).First(&book).Update("deleted_at", nil).GetErrors()

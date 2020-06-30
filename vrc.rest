@@ -3,10 +3,10 @@ http://localhost:8081/api/v2
 Content-Type: application/json
 GET /books
 
-// GET by id
+// GET one by id
 http://localhost:8081/api/v2
 Content-Type: application/json
-GET /books/1
+GET /books/2
 
 // CREATE 1
 http://localhost:8081/api/v2
@@ -32,7 +32,7 @@ POST /books
 "price":119.90
 }
 
-// UPDATE
+// UPDATE by id
 http://localhost:8081/api/v2
 Content-Type: application/json
 PUT /books/2
@@ -40,12 +40,12 @@ PUT /books/2
     "description":"O poharu."
 }
 
-// DELETE
+// DELETE by id
 http://localhost:8081/api/v2
 Content-Type: application/json
 DELETE /books/1
 
-// RECOVER
+// RECOVER by id
 http://localhost:8081/api/v2
 Content-Type: application/json
 POST /books/2/recover

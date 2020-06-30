@@ -2,7 +2,7 @@ package models
 
 import "github.com/jinzhu/gorm"
 
-// Book stores the book attributes
+// Book is a bookstore product struct.
 type Book struct {
 	gorm.Model
 	SKU         *string  `json:"sku,omitempty" gorm:"not null;unique"`

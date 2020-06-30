@@ -1,6 +1,6 @@
 package config
 
-// DBConfig holds database settings.
+// DBConfig is a database config struct.
 type DBConfig struct {
 	Host     string
 	Port     int

@@ -6,18 +6,22 @@ import (
 	"time"
 )
 
-// Config holds all configuration values.
+// Config is a application config struct.
 type Config struct {
 	Log *LogConfig
 	Srv *ServerConfig
 	DB  *DBConfig
 }
 
+// set config
 var cfg = &Config{
+
+	// log
 	Log: &LogConfig{
 		Output: os.Stdout,
 	},
 
+	// srv
 	Srv: &ServerConfig{
 		Addr:              ":8081",
 		ReadTimeout:       3 * time.Second,
@@ -27,6 +31,7 @@ var cfg = &Config{
 		MaxHeaderBytes:    http.DefaultMaxHeaderBytes,
 	},
 
+	// db
 	DB: &DBConfig{
 		Host:     "localhost",
 		Port:     5432,
@@ -36,7 +41,7 @@ var cfg = &Config{
 	},
 }
 
-// GetConfig returns app configuration.
+// GetConfig returns application config struct.
 func GetConfig() *Config {
 	return cfg
 }

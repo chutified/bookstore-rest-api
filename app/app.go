@@ -13,7 +13,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// App holds all api values.
+// App is an application struct.
 type App struct {
 	Log    io.Writer
 	Srv    *http.Server
@@ -21,12 +21,12 @@ type App struct {
 	DB     *gorm.DB
 }
 
-// New returns new App.
+// New returns a new App.
 func New() *App {
 	return &App{}
 }
 
-// Initialize applies the configuration.
+// Initialize applies the config of the App.
 func (a *App) Initialize(cfg *config.Config) {
 
 	// log
@@ -42,10 +42,10 @@ func (a *App) Initialize(cfg *config.Config) {
 	)
 	db, err := gorm.Open("postgres", dbURI)
 	if err != nil {
-		log.Fatal(fmt.Errorf("could not connect into the database: %v", err))
+		log.Fatal(fmt.Errorf("could Initialize a db connection: %v", err))
 	}
 	a.DB = services.DBMigrate(db)
-	db.LogMode(false)
+	db.LogMode(false) // idsable annoying database logs
 
 	// router
 	a.Router = routing.GetRouter(cfg, a.DB)
@@ -53,7 +53,7 @@ func (a *App) Initialize(cfg *config.Config) {
 	// server
 	a.Srv = &http.Server{
 		Addr:              cfg.Srv.Addr,
-		Handler:           a.Router,
+		Handler:           a.Router, // router
 		ReadTimeout:       cfg.Srv.ReadTimeout,
 		ReadHeaderTimeout: cfg.Srv.ReadHeaderTimeout,
 		WriteTimeout:      cfg.Srv.WriteTimeout,
@@ -63,11 +63,13 @@ func (a *App) Initialize(cfg *config.Config) {
 }
 
 // Close takes care of the whole application closure.
-func (a *App) Close() error {
-	return a.DB.Close()
+func (a *App) Close() []error {
+	return []error{
+		a.DB.Close(),
+	}
 }
 
-// Run starts a server.
+// Run starts the application server.
 func (a *App) Run() {
 	fmt.Fprintf(a.Log, "Listening and serving HTTP on %s\n", a.Srv.Addr)
 	log.Fatal(a.Srv.ListenAndServe())

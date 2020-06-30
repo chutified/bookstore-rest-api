@@ -2,7 +2,7 @@ package config
 
 import "io"
 
-// LogConfig controlls logs destination.
+// LogConfig is a logging config struct.
 type LogConfig struct {
 	Output io.Writer
 }

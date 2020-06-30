@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// ServerConfig holds server settings.
+// ServerConfig is a server config struct.
 type ServerConfig struct {
 	Addr              string
 	ReadTimeout       time.Duration

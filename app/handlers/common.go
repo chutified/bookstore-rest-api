@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// errToJSON returns errors in JSON
+// errToJSON returns errors in JSON.
 func errToJSON(errs ...error) gin.H {
 	if len(errs) == 1 {
 		return gin.H{
