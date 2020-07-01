@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"regexp"
 	"strconv"
 	"tommychu/workdir/026_api-example-v2/app/models"
 	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
@@ -85,13 +86,18 @@ func NewBook(c *gin.Context) {
 	}
 
 	// create book
-	b, errs, err := dbservices.CreateBook(db, book)
-	if err != nil {
-		c.JSON(400, HandleErrs(err))
-		return
-	}
+	b, errs := dbservices.CreateBook(db, book)
 	if len(errs) != 0 {
-		c.JSON(400, HandleErrs(errs...))
+
+		expString := `(.*duplicate key value.*)|(.*violates not-null constraint.*)`
+		exp, _ := regexp.Compile(expString)
+		match := exp.Match([]byte(errs[0].Error()))
+		if match {
+			c.JSON(400, HandleErrs(errs...))
+			return
+		}
+
+		c.JSON(500, HandleErrs(errs...))
 		return
 	}
 

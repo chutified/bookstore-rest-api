@@ -6,7 +6,7 @@ GET /books
 // GET one by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-GET /books/2
+GET /books/86
 
 // CREATE 1
 http://localhost:8081/api/v1
@@ -20,7 +20,7 @@ POST /books
 "price":119.90
 }
 
-// CREATE 1
+// CREATE 2
 http://localhost:8081/api/v1
 Content-Type: application/json
 POST /books
@@ -30,6 +30,18 @@ POST /books
 "author":"J. K. Rowling",
 "description":"O poharu.",
 "price":119.90
+}
+
+// CREATE 3
+http://localhost:8081/api/v1
+Content-Type: application/json
+POST /books
+{
+"sku":"564",
+"title":"Kniha",
+"author":"Ma Jolanka",
+"description":"O skvelem Tomikovi.",
+"price":499.90
 }
 
 // UPDATE by id

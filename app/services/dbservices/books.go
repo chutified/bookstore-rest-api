@@ -1,7 +1,6 @@
 package dbservices
 
 import (
-	"fmt"
 	"tommychu/workdir/026_api-example-v2/app/models"
 
 	"github.com/jinzhu/gorm"
@@ -24,11 +23,8 @@ func ReadBook(db *gorm.DB, id int) (models.Book, []error) {
 }
 
 // CreateBook creates a new book.
-func CreateBook(db *gorm.DB, book models.Book) (models.Book, []error, error) {
-	if !db.NewRecord(book) {
-		return models.Book{}, nil, fmt.Errorf("this book already exists: %v", book)
-	}
-	return book, db.Create(&book).GetErrors(), nil
+func CreateBook(db *gorm.DB, book models.Book) (models.Book, []error) {
+	return book, db.Create(&book).GetErrors()
 }
 
 // UpdateBook updates the book with th changed fields.
