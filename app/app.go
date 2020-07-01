@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"tommychu/workdir/026_api-example-v2/app/handlers"
 	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
@@ -27,14 +26,17 @@ func New() *App {
 }
 
 // Initialize applies the config of the App.
-func (a *App) Initialize(cfg *config.Config) {
+func (a *App) Initialize(cfg *config.Config) error {
 
 	// log
 	a.Log = cfg.Log.Output
 
 	// database
-	db := dbservices.GetDB(cfg)
-	a.DB = dbservices.DBMigrate(db)
+	var err error
+	a.DB, err = dbservices.GetDB(cfg)
+	if err != nil {
+		return err
+	}
 
 	// router
 	a.Router = handlers.GetRouter(cfg, a.DB)
@@ -49,6 +51,9 @@ func (a *App) Initialize(cfg *config.Config) {
 		IdleTimeout:       cfg.Srv.IdleTimeout,
 		MaxHeaderBytes:    cfg.Srv.MaxHeaderBytes,
 	}
+
+	// success
+	return nil
 }
 
 // Close takes care of the whole application closure.
@@ -59,7 +64,7 @@ func (a *App) Close() []error {
 }
 
 // Run starts the application server.
-func (a *App) Run() {
+func (a *App) Run() error {
 	fmt.Fprintf(a.Log, "Listening and serving HTTP on %s\n", a.Srv.Addr)
-	log.Fatal(a.Srv.ListenAndServe())
+	return a.Srv.ListenAndServe()
 }

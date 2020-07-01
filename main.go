@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"tommychu/workdir/026_api-example-v2/app"
 	"tommychu/workdir/026_api-example-v2/config"
 
@@ -24,12 +25,17 @@ func main() {
 
 	// set app
 	a := app.New()
-	a.Initialize(cfg)
-	defer a.Close()
+	err := a.Initialize(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		log.Fatal(a.Close())
+	}()
 
 	// documentation
 	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json") // The url pointing to API definition
 	a.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
-	a.Run()
+	log.Panic(a.Run())
 }

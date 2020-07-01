@@ -9,11 +9,12 @@ import (
 
 func TestDBConn(t *testing.T) {
 
+	// set
 	db := &gorm.DB{Value: "test"}
 	c := &gin.Context{}
-	f := DBConn(db)
+	DBConn(db)(c)
 
-	f(c)
+	// check
 	if got := c.Value("db").(*gorm.DB).Value.(string); got != "test" {
 		t.Errorf("expected: %s, got: %s", "test", got)
 	}
