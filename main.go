@@ -1,14 +1,12 @@
 package main
 
 import (
-	"tommychu/workdir/027_api-example-v2/app"
-	"tommychu/workdir/027_api-example-v2/config"
+	"tommychu/workdir/026_api-example-v2/app"
+	"tommychu/workdir/026_api-example-v2/config"
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
-
-	_ "tommychu/workdir/027_api-example-v2/docs"
 )
 
 // @Title Bookstore API example with Gin

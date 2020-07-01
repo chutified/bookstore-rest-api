@@ -6,7 +6,7 @@ GET /books
 // GET one by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-GET /books/26
+GET /books/21312
 
 // CREATE 1
 http://localhost:8081/api/v1

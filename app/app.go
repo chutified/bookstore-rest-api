@@ -5,9 +5,9 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"tommychu/workdir/027_api-example-v2/app/routing"
-	services "tommychu/workdir/027_api-example-v2/app/services/db"
-	"tommychu/workdir/027_api-example-v2/config"
+	"tommychu/workdir/026_api-example-v2/app/handlers"
+	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
+	"tommychu/workdir/026_api-example-v2/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -33,22 +33,11 @@ func (a *App) Initialize(cfg *config.Config) {
 	a.Log = cfg.Log.Output
 
 	// database
-	dbURI := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",
-		cfg.DB.Host,
-		cfg.DB.Port,
-		cfg.DB.User,
-		cfg.DB.DBName,
-		cfg.DB.Password,
-	)
-	db, err := gorm.Open("postgres", dbURI)
-	if err != nil {
-		log.Fatal(fmt.Errorf("could Initialize a db connection: %v", err))
-	}
-	a.DB = services.DBMigrate(db)
-	db.LogMode(false) // idsable annoying database logs
+	db := dbservices.GetDB(cfg)
+	a.DB = dbservices.DBMigrate(db)
 
 	// router
-	a.Router = routing.GetRouter(cfg, a.DB)
+	a.Router = handlers.GetRouter(cfg, a.DB)
 
 	// server
 	a.Srv = &http.Server{

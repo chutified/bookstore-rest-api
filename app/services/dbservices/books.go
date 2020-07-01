@@ -1,17 +1,11 @@
-package services
+package dbservices
 
 import (
 	"fmt"
-	"tommychu/workdir/027_api-example-v2/app/models"
+	"tommychu/workdir/026_api-example-v2/app/models"
 
 	"github.com/jinzhu/gorm"
 )
-
-// DBMigrate is a database migration.
-func DBMigrate(db *gorm.DB) *gorm.DB {
-	db.AutoMigrate(&models.Book{})
-	return db
-}
 
 // ReadAllBooks gets all books.
 func ReadAllBooks(db *gorm.DB) ([]models.Book, []error) {
@@ -20,16 +14,13 @@ func ReadAllBooks(db *gorm.DB) ([]models.Book, []error) {
 }
 
 // ReadBook finds a one specific book.
-func ReadBook(db *gorm.DB, id int) (models.Book, []error, error) {
+func ReadBook(db *gorm.DB, id int) (models.Book, []error) {
 	var book models.Book
 	errs := db.First(&book, id).GetErrors()
-	if book.Model.ID == 0 {
-		return models.Book{}, nil, fmt.Errorf("book with id '%d' does not exists", id)
-	}
 	if len(errs) != 0 {
-		return models.Book{}, errs, nil
+		return models.Book{}, errs
 	}
-	return book, nil, nil
+	return book, nil
 }
 
 // CreateBook creates a new book.

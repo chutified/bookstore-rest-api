@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"strconv"
-	"tommychu/workdir/027_api-example-v2/app/models"
-	services "tommychu/workdir/027_api-example-v2/app/services/db"
+	"tommychu/workdir/026_api-example-v2/app/models"
+	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -20,9 +20,9 @@ func GetAllBooks(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
 	// get books
-	books, errs := services.ReadAllBooks(db)
+	books, errs := dbservices.ReadAllBooks(db)
 	if len(errs) != 0 {
-		c.JSON(500, handleErrs(errs...))
+		c.JSON(500, HandleErrs(errs...))
 		return
 	}
 
@@ -45,18 +45,18 @@ func GetBook(c *gin.Context) {
 	// get id
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 
 	// get the book
-	book, errs, err := services.ReadBook(db, id)
-	if err != nil {
-		c.JSON(400, handleErrs(err))
+	book, errs := dbservices.ReadBook(db, id)
+	if len(errs) == 1 && errs[0].Error() == "record not found" {
+		c.JSON(400, HandleErrs(errs...))
 		return
 	}
 	if len(errs) != 0 {
-		c.JSON(500, handleErrs(errs...))
+		c.JSON(500, HandleErrs(errs...))
 		return
 	}
 
@@ -80,18 +80,18 @@ func NewBook(c *gin.Context) {
 	var book models.Book
 	err := c.BindJSON(&book)
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 
 	// create book
-	b, errs, err := services.CreateBook(db, book)
+	b, errs, err := dbservices.CreateBook(db, book)
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 	if len(errs) != 0 {
-		c.JSON(400, handleErrs(errs...))
+		c.JSON(400, HandleErrs(errs...))
 		return
 	}
 
@@ -115,7 +115,7 @@ func UpdateBook(c *gin.Context) {
 	// get id
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 
@@ -123,14 +123,14 @@ func UpdateBook(c *gin.Context) {
 	var book models.Book
 	err = c.BindJSON(&book)
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 
 	// update
-	book, errs := services.UpdateBook(db, id, book)
+	book, errs := dbservices.UpdateBook(db, id, book)
 	if len(errs) != 0 {
-		c.JSON(400, handleErrs(errs...))
+		c.JSON(400, HandleErrs(errs...))
 		return
 	}
 
@@ -152,14 +152,14 @@ func RemoveBook(c *gin.Context) {
 	// get id
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 
 	// deletiton
-	errs := services.DeleteBook(db, id)
+	errs := dbservices.DeleteBook(db, id)
 	if len(errs) != 0 {
-		c.JSON(400, handleErrs(errs...))
+		c.JSON(500, HandleErrs(errs...))
 		return
 	}
 
@@ -183,14 +183,14 @@ func RecoverBook(c *gin.Context) {
 	// get id
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.JSON(400, handleErrs(err))
+		c.JSON(400, HandleErrs(err))
 		return
 	}
 
 	// recover book
-	book, errs := services.RecoverBook(db, id)
+	book, errs := dbservices.RecoverBook(db, id)
 	if len(errs) != 0 {
-		c.JSON(400, handleErrs(errs...))
+		c.JSON(400, HandleErrs(errs...))
 		return
 	}
 

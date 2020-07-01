@@ -1,11 +1,14 @@
 package handlers
 
 import (
-	"tommychu/workdir/027_api-example-v2/app/models"
+	"fmt"
+	"tommychu/workdir/026_api-example-v2/app/models"
 )
 
-// handleErrs returns errors in AppErrors.
-func handleErrs(errs ...error) models.AppErrors {
+// HandleErrs returns errors in AppErrors.
+func HandleErrs(errs ...error) models.AppErrors {
+
+	fmt.Println(errs)
 
 	var result models.AppErrors
 	for _, err := range errs {
