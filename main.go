@@ -5,6 +5,7 @@ import (
 
 	"github.com/chutified/bookstore-api-example/app"
 	"github.com/chutified/bookstore-api-example/config"
+	_ "github.com/chutified/bookstore-api-example/docs"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

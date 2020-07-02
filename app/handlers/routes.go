@@ -5,7 +5,6 @@ import (
 
 	"github.com/chutified/bookstore-api-example/app/middlewares"
 	"github.com/chutified/bookstore-api-example/config"
-	_ "github.com/chutified/bookstore-api-example/docs"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	swaggerFiles "github.com/swaggo/files"

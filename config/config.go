@@ -6,7 +6,8 @@ import (
 	"time"
 )
 
-const DEBUG_MODE = false
+// DebugMode toggles debug/release status
+const DebugMode = false
 
 // Config is a application config struct.
 type Config struct {
