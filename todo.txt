@@ -4,3 +4,4 @@ filetree in readme
 makefile
 installation
 dependencies (technologies)
+coverage

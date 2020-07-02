@@ -62,4 +62,4 @@ DELETE /books/496
 // RECOVER by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-POST /books/496/recover
+POST /books/45/recover

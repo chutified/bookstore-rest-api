@@ -205,7 +205,16 @@ func RecoverBook(c *gin.Context) {
 	// recover book
 	book, errs := dbservices.RecoverBook(db, id)
 	if len(errs) != 0 {
-		c.JSON(400, HandleErrs(errs...))
+
+		expString := `(.*not found.*)`
+		exp, _ := regexp.Compile(expString)
+		match := exp.Match([]byte(errs[0].Error()))
+		if match {
+			c.JSON(400, HandleErrs(errs...))
+			return
+		}
+
+		c.JSON(500, HandleErrs(errs...))
 		return
 	}
 

@@ -347,7 +347,7 @@ func TestUpdateBook(t *testing.T) {
 			router.ServeHTTP(w, r)
 
 			// success
-			if w.Code == 200 {
+			if test.expectedCode == 200 {
 				var b models.Book
 				db.Where("id = 1").First(&b)
 				assert.Equal(t, true, *b.SKU == "test3")
@@ -436,7 +436,7 @@ func TestRemoveBook(t *testing.T) {
 			router.ServeHTTP(w, r)
 
 			// success
-			if w.Code == 200 {
+			if test.expectedCode == 200 {
 				var b models.Book
 				db.Unscoped().Where("id = 0").First(&b)
 				assert.Equal(t, true, b.DeletedAt != nil)
@@ -454,4 +454,87 @@ func TestRemoveBook(t *testing.T) {
 }
 
 func TestRecoverBook(t *testing.T) {
+	gin.SetMode(gin.ReleaseMode)
+	cfg := config.GetConfig()
+	cfg.Log.Output = nilWriter{}
+
+	// test model
+	var (
+		sku         = "test"
+		title       = "test"
+		author      = "test"
+		description = "test"
+		price       = 0.0
+	)
+	testModel := models.Book{
+		SKU:         &sku,
+		Title:       &title,
+		Author:      &author,
+		Description: description,
+		Price:       &price,
+	}
+
+	// tests table
+	tests := []struct {
+		name         string
+		id           string
+		action       func(*gorm.DB)
+		expectedCode int
+	}{
+		{
+			name:         "ok",
+			id:           "0",
+			action:       func(db *gorm.DB) {},
+			expectedCode: 200,
+		},
+		{
+			name:         "invalid id non-parseable",
+			id:           "non",
+			action:       func(db *gorm.DB) {},
+			expectedCode: 400,
+		},
+		{
+			name:         "database down",
+			id:           "0",
+			action:       func(db *gorm.DB) { db.Close() },
+			expectedCode: 500,
+		},
+	}
+
+	// run tests
+	for _, test := range tests {
+		// create, delete, recover, check, cleanup
+		t.Run(test.name, func(t *testing.T) {
+			db, _ := dbservices.GetDB(cfg)
+			defer db.Close()
+
+			// insert
+			db = db.Create(&testModel)
+			db.DB().Exec(fmt.Sprintf("UPDATE books SET id = 0 WHERE id = %v;", testModel.Model.ID))
+			db.Delete(models.Book{}, "id = 0")
+
+			router := GetRouter(cfg, db)
+
+			// set
+			test.action(db)
+			w := httptest.NewRecorder()
+			r, _ := http.NewRequest("POST", fmt.Sprintf("/api/v1/books/%v/recover", test.id), nil)
+			router.ServeHTTP(w, r)
+
+			// success
+			if test.expectedCode == 200 {
+				var b models.Book
+				db.Where("id = 0").First(&b)
+				assert.Equal(t, true, b.DeletedAt == nil)
+			}
+
+			// clean up
+			db, _ = dbservices.GetDB(cfg)
+			defer db.Close()
+			db.DB().Exec("DELETE FROM books WHERE id = 0;")
+
+			// check
+			assert.Equal(t, test.expectedCode, w.Code)
+		})
+	}
 }

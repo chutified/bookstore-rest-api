@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"tommychu/workdir/026_api-example-v2/app"
 	"tommychu/workdir/026_api-example-v2/config"
@@ -34,7 +35,7 @@ func main() {
 	}()
 
 	// documentation
-	url := ginSwagger.URL("http://localhost:8081/swagger/doc.json") // The url pointing to API definition
+	url := ginSwagger.URL(fmt.Sprintf("http://localhost%s/swagger/doc.json", cfg.Srv.Addr)) // The url pointing to API definition
 	a.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	log.Panic(a.Run())
