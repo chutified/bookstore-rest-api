@@ -8,10 +8,10 @@ import (
 	"strings"
 	"testing"
 	"time"
-	"tommychu/workdir/026_api-example-v2/app/models"
-	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
-	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/chutified/api-example-v2/app/services/dbservices"
+	"github.com/chutified/bookstore-api-example/app/models"
+	"github.com/chutified/bookstore-api-example/config"
 	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jinzhu/gorm"

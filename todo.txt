@@ -1,5 +1,4 @@
 dockerfile
-tests
 filetree in readme
 makefile
 installation
@@ -7,3 +6,4 @@ dependencies (technologies)
 coverage
 models
 docs location
+config file

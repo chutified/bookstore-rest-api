@@ -1,4 +1,4 @@
-module tommychu/workdir/026_api-example-v2
+module github.com/chutified/bookstore-api-example
 
 go 1.14
 

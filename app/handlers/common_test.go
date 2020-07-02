@@ -3,8 +3,8 @@ package handlers
 import (
 	"errors"
 	"testing"
-	"tommychu/workdir/026_api-example-v2/app/models"
 
+	"github.com/chutified/bookstore-api-example/app/models"
 	"github.com/google/go-cmp/cmp"
 )
 

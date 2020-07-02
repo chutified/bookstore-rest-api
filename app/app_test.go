@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 	"time"
-	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/chutified/bookstore-api-example/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gopkg.in/go-playground/assert.v1"

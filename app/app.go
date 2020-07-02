@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"tommychu/workdir/026_api-example-v2/app/handlers"
-	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
-	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/chutified/bookstore-api-example/app/handlers"
+	"github.com/chutified/bookstore-api-example/app/services/dbservices"
+	"github.com/chutified/bookstore-api-example/config"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )

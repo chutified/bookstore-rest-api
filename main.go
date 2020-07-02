@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"tommychu/workdir/026_api-example-v2/app"
-	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/chutified/bookstore-api-example/app"
+	"github.com/chutified/bookstore-api-example/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

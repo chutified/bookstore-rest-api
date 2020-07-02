@@ -2,9 +2,10 @@ package handlers
 
 import (
 	"fmt"
-	"tommychu/workdir/026_api-example-v2/app/middlewares"
-	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/chutified/bookstore-api-example/app/middlewares"
+	"github.com/chutified/bookstore-api-example/config"
+	_ "github.com/chutified/bookstore-api-example/docs"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	swaggerFiles "github.com/swaggo/files"
@@ -43,7 +44,7 @@ func GetRouter(cfg *config.Config, db *gorm.DB) *gin.Engine {
 	})
 
 	// documentation
-	url := ginSwagger.URL(fmt.Sprintf("http://localhost%s/swagger/doc.json", cfg.Srv.Addr)) // The url pointing to API definition
+	url := ginSwagger.URL(fmt.Sprintf("http://localhost%s/swagger/doc.json", cfg.Srv.Addr))
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	return r

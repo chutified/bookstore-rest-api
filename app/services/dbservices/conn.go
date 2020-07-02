@@ -2,9 +2,9 @@ package dbservices
 
 import (
 	"fmt"
-	"tommychu/workdir/026_api-example-v2/app/models"
-	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/chutified/bookstore-api-example/app/models"
+	"github.com/chutified/bookstore-api-example/config"
 	"github.com/jinzhu/gorm"
 )
 

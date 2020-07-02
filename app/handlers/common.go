@@ -2,7 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"tommychu/workdir/026_api-example-v2/app/models"
+
+	"github.com/chutified/bookstore-api-example/app/models"
 )
 
 // HandleErrs returns errors in AppErrors.
