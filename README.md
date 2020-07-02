@@ -1,4 +1,4 @@
-# Bookstore REST API example
+# Bookstore REST API
 
 The project is an example of a REST API with everything needed to deploy.
 
