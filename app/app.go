@@ -5,8 +5,8 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/chutified/bookstore-api-example/app/dbservices"
 	"github.com/chutified/bookstore-api-example/app/handlers"
-	"github.com/chutified/bookstore-api-example/app/services/dbservices"
 	"github.com/chutified/bookstore-api-example/config"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"

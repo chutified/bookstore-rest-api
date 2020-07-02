@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chutified/api-example-v2/app/services/dbservices"
+	"github.com/chutified/bookstore-api-example/app/dbservices"
 	"github.com/chutified/bookstore-api-example/app/models"
 	"github.com/chutified/bookstore-api-example/config"
 	"github.com/gin-gonic/gin"
