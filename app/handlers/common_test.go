@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/chutified/bookstore-api-example/app/models"
+	"github.com/chutified/bookstore-api/app/models"
 	"github.com/google/go-cmp/cmp"
 )
 

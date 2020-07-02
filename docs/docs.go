@@ -6,9 +6,12 @@ package docs
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"html/template"
+	"log"
 	"strings"
 
-	"github.com/alecthomas/template"
+	"github.com/chutified/bookstore-api/config"
 	"github.com/swaggo/swag"
 )
 
@@ -301,6 +304,12 @@ var SwaggerInfo = swaggerInfo{
 type s struct{}
 
 func (s *s) ReadDoc() string {
+	cfg, err := config.GetConfig()
+	if err != nil {
+		log.Printf("could not get config: %v", err)
+		return ""
+	}
+	SwaggerInfo.Host = fmt.Sprintf("localhost%v", cfg.Srv.Addr)
 	sInfo := SwaggerInfo
 	sInfo.Description = strings.Replace(sInfo.Description, "\n", "\\n", -1)
 

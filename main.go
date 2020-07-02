@@ -1,24 +1,25 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
-	"github.com/chutified/bookstore-api-example/app"
-	"github.com/chutified/bookstore-api-example/config"
-	_ "github.com/chutified/bookstore-api-example/docs"
+	"github.com/chutified/bookstore-api/app"
+	"github.com/chutified/bookstore-api/config"
+	_ "github.com/chutified/bookstore-api/docs"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-// @Title Bookstore API example with Gin
-// @Version 1.0
-// @Description This is a sample of a Gin API framework.
+// @title Bookstore API example with Gin
+// @version 1.0
+// @description This is a sample of a Gin API framework.
 
-// @Contact.name Tommy Chu
-// @Contact.email tommychu2256@gmail.com
+// @contact.name Tommy Chu
+// @contact.email tommychu2256@gmail.com
 
-// @Schemes http
-// @Host localhost:8081
+// @schemes http
+// @host localhost:8081
 // @BasePath /api/v1
 func main() {
 	cfg, err := config.GetConfig()
@@ -40,5 +41,7 @@ func main() {
 		log.Fatal(a.Close())
 	}()
 
+	fmt.Fprintf(a.Log, "Listening and serving HTTP on %s\n", a.Srv.Addr)
+	fmt.Fprintf(a.Log, "API Documentation: http://localhost%s/swagger/index.html\n", a.Srv.Addr)
 	log.Panic(a.Run())
 }

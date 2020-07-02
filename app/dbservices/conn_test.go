@@ -3,7 +3,7 @@ package dbservices
 import (
 	"testing"
 
-	"github.com/chutified/bookstore-api-example/config"
+	"github.com/chutified/bookstore-api/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gopkg.in/go-playground/assert.v1"
@@ -45,7 +45,10 @@ func TestGetDB(t *testing.T) {
 	// run tests
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			cfg := config.GetConfig()
+			cfg, err := config.GetConfig()
+			if err != nil {
+				t.Fatalf("could not get config: %v", err)
+			}
 
 			// get
 			test.actionBefore(cfg)

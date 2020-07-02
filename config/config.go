@@ -3,6 +3,9 @@ package config
 import (
 	"io/ioutil"
 	"os"
+	"path"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"gopkg.in/yaml.v2"
@@ -33,8 +36,8 @@ func GetConfig() (*Config, error) {
 func fromFile() (*Config, error) {
 
 	// read file
-	wd, _ := os.Getwd()
-	bs, err := ioutil.ReadFile(wd + "/config.yaml")
+	configPath := path.Join(rootDir(), "/settings.yaml")
+	bs, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return nil, err
 	}
@@ -73,4 +76,10 @@ func fromFile() (*Config, error) {
 	}
 
 	return &cfg, nil
+}
+
+func rootDir() string {
+	_, b, _, _ := runtime.Caller(0)
+	d := path.Join(path.Dir(b))
+	return filepath.Dir(d)
 }

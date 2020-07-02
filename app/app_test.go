@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chutified/bookstore-api-example/config"
+	"github.com/chutified/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gopkg.in/go-playground/assert.v1"
@@ -24,7 +24,10 @@ func TestNew(t *testing.T) {
 
 func TestInitialize(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 	a := New()
 
@@ -70,14 +73,16 @@ func TestInitialize(t *testing.T) {
 }
 
 func TestRun(t *testing.T) {
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	a := New()
 	err1 := a.Initialize(cfg)
 	assert.Equal(t, err1, nil)
 	defer func() {
 		errs := a.Close()
 		assert.Equal(t, errs[0], nil)
-		assert.Equal(t, errs[1], nil)
 	}()
 
 	go func() {

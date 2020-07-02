@@ -3,8 +3,8 @@ package dbservices
 import (
 	"fmt"
 
-	"github.com/chutified/bookstore-api-example/app/models"
-	"github.com/chutified/bookstore-api-example/config"
+	"github.com/chutified/bookstore-api/app/models"
+	"github.com/chutified/bookstore-api/config"
 	"github.com/jinzhu/gorm"
 )
 

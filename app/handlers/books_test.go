@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chutified/bookstore-api-example/app/dbservices"
-	"github.com/chutified/bookstore-api-example/app/models"
-	"github.com/chutified/bookstore-api-example/config"
+	"github.com/chutified/bookstore-api/app/dbservices"
+	"github.com/chutified/bookstore-api/app/models"
+	"github.com/chutified/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jinzhu/gorm"
@@ -27,7 +27,10 @@ func (w nilWriter) Write([]byte) (int, error) {
 
 func TestGetAllBooks(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 
 	// tests table
@@ -69,7 +72,10 @@ func TestGetAllBooks(t *testing.T) {
 
 func TestGetBook(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 
 	// test model
@@ -173,7 +179,10 @@ func TestGetBook(t *testing.T) {
 
 func TestNewBook(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 
 	testBody := `{"sku":"test","title":"test","author":"test","price":0}`
@@ -266,7 +275,10 @@ func TestNewBook(t *testing.T) {
 
 func TestUpdateBook(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 
 	// test model
@@ -385,7 +397,10 @@ func TestUpdateBook(t *testing.T) {
 
 func TestRemoveBook(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 
 	// test model
@@ -473,7 +488,10 @@ func TestRemoveBook(t *testing.T) {
 
 func TestRecoverBook(t *testing.T) {
 	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
+	cfg, err := config.GetConfig()
+	if err != nil {
+		t.Fatalf("could not get config: %v", err)
+	}
 	cfg.Log.Output = nilWriter{}
 
 	// test model

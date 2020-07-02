@@ -1,13 +1,12 @@
 package app
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
-	"github.com/chutified/bookstore-api-example/app/dbservices"
-	"github.com/chutified/bookstore-api-example/app/handlers"
-	"github.com/chutified/bookstore-api-example/config"
+	"github.com/chutified/bookstore-api/app/dbservices"
+	"github.com/chutified/bookstore-api/app/handlers"
+	"github.com/chutified/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )
@@ -65,6 +64,5 @@ func (a *App) Close() []error {
 
 // Run starts the application server.
 func (a *App) Run() error {
-	fmt.Fprintf(a.Log, "Listening and serving HTTP on %s\n", a.Srv.Addr)
 	return a.Srv.ListenAndServe()
 }
