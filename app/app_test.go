@@ -77,6 +77,7 @@ func TestRun(t *testing.T) {
 	defer func() {
 		errs := a.Close()
 		assert.Equal(t, errs[0], nil)
+		assert.Equal(t, errs[1], nil)
 	}()
 
 	go func() {

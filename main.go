@@ -21,19 +21,24 @@ import (
 // @Host localhost:8081
 // @BasePath /api/v1
 func main() {
-	if !config.DEBUG_MODE {
-		gin.SetMode(gin.ReleaseMode)
-	}
-
-	cfg := config.GetConfig()
-
-	// set app
-	a := app.New()
-	err := a.Initialize(cfg)
+	cfg, err := config.GetConfig()
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer log.Fatal(a.Close())
+
+	if !cfg.DebugMode {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	// set app
+	a := app.New()
+	err = a.Initialize(cfg)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer func() {
+		log.Fatal(a.Close())
+	}()
 
 	log.Panic(a.Run())
 }

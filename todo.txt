@@ -1,9 +1,10 @@
 dockerfile
+
+README
+docs location
+models
+coverage
+dependencies (technologies)
+installation
 filetree in readme
 makefile
-installation
-dependencies (technologies)
-coverage
-models
-docs location
-config file

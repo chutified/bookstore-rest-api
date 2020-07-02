@@ -3,7 +3,10 @@ package config
 import "testing"
 
 func TestGetConfig(t *testing.T) {
-	cfg := GetConfig()
+	cfg, err := GetConfig()
+	if err != nil {
+		t.Errorf("invalid config.yaml file")
+	}
 	if cfg.Log == nil {
 		t.Errorf("expected cfg.Log")
 	}

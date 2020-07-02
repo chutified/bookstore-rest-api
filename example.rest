@@ -51,7 +51,7 @@ http://localhost:8081/api/v1
 Content-Type: application/json
 PUT /books/496
 {
-    "sku":"78787987878"
+    "sku":"99999999"
 }
 
 // DELETE by id
