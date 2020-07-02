@@ -1,0 +1,65 @@
+// EXAMPLE OF API REQUEST
+
+// GET all
+http://localhost:8081/api/v1
+Content-Type: application/json
+GET /books
+
+// GET one by id
+http://localhost:8081/api/v1
+Content-Type: application/json
+GET /books/382
+
+// CREATE 1
+http://localhost:8081/api/v1
+Content-Type: application/json
+POST /books
+{
+"sku":"748569",
+"title":"The Unicorn Project",
+"author":"Gene Kim",
+"description":"In The Unicorn Project, we follow Maxine, a senior lead developer and architect, as she is exiled to the Phoenix Project, to the horror of her friends and colleagues, as punishment for contributing to a payroll outage. She tries to survive in what feels like a heartless and uncaring bureaucracy and to work within a system where no one can get anything done without endless committees, paperwork, and approvals.",
+"price":22.99
+}
+
+// CREATE 2
+http://localhost:8081/api/v1
+Content-Type: application/json
+POST /books
+{
+"sku":"845962",
+"title":"1984",
+"author":"George Orwell",
+"description":"In the year 1984, civilisation has been damaged by war, civil conflict, and revolution. Airstrip One (formerly known as Great Britain) is a province of Oceania, one of the three totalitarian super-states that rule the world. It is ruled by the \"Party\" under the ideology of \"Ingsoc\" (a newspeak shortening of \"English Socialism\") and the mysterious leader Big Brother, who has an intense cult of personality.",
+"price":8.99
+}
+
+// CREATE 3
+http://localhost:8081/api/v1
+Content-Type: application/json
+POST /books
+{
+"sku":"564",
+"title":"Of Mice and Men",
+"author":"John Steinbeck",
+"description":"George is \"small and quick of face\"; Lennie, a man of tremendous size, has the mind of a young child. Yet they have formed a \"family,\" clinging together in the face of loneliness and alienation. They hustle work when they can, living a hand-to-mouth existence. For George and Lennie have a plan: to own an acre of land and a shack they can call their own. When they land jobs on a ranch, the fulfillment of their dream seems to be within their grasp. But even George cannot guard Lennie from the provocations of a flirtatious woman, nor predict the consequences of Lennie's unswerving obedience...",
+"price":5.80
+}
+
+// UPDATE by id
+http://localhost:8081/api/v1
+Content-Type: application/json
+PUT /books/496
+{
+    "sku":"7895"
+}
+
+// DELETE by id
+http://localhost:8081/api/v1
+Content-Type: application/json
+DELETE /books/496
+
+// RECOVER by id
+http://localhost:8081/api/v1
+Content-Type: application/json
+POST /books/496/recover

@@ -1,0 +1,6 @@
+dockerfile
+tests
+filetree in readme
+makefile
+installation
+dependencies (technologies)

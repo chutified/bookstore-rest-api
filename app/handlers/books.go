@@ -136,7 +136,16 @@ func UpdateBook(c *gin.Context) {
 	// update
 	book, errs := dbservices.UpdateBook(db, id, book)
 	if len(errs) != 0 {
-		c.JSON(400, HandleErrs(errs...))
+
+		expString := `(.*duplicate key value.*)`
+		exp, _ := regexp.Compile(expString)
+		match := exp.Match([]byte(errs[0].Error()))
+		if match {
+			c.JSON(400, HandleErrs(errs...))
+			return
+		}
+
+		c.JSON(500, HandleErrs(errs...))
 		return
 	}
 

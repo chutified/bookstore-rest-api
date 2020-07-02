@@ -72,7 +72,7 @@ func TestGetBook(t *testing.T) {
 	cfg := config.GetConfig()
 	cfg.Log.Output = nilWriter{}
 
-	// test model
+	// create a test model
 	var (
 		sku         = "######"
 		title       = "testModel"
@@ -82,6 +82,7 @@ func TestGetBook(t *testing.T) {
 	)
 	testModel := models.Book{
 		Model: models.Model{
+			ID:        0,
 			CreatedAt: time.Unix(0, 0),
 			UpdatedAt: time.Unix(0, 0),
 		},
@@ -91,7 +92,15 @@ func TestGetBook(t *testing.T) {
 		Description: description,
 		Price:       &price,
 	}
+
+	// insert
+	db, _ := dbservices.GetDB(cfg)
+	db = db.Create(&testModel)
+	db = db.Last(&testModel)
+	db.Model(&models.Book{}).Update("id", 0)
+	defer db.Unscoped().Delete(&testModel)
 	testModelBytes, _ := json.Marshal(&testModel)
+	db.Close()
 
 	// tests table
 	tests := []struct {
@@ -103,7 +112,7 @@ func TestGetBook(t *testing.T) {
 	}{
 		{
 			name:           "ok",
-			id:             "0",
+			id:             fmt.Sprintf("%v", testModel.ID),
 			action:         func(db *gorm.DB) {},
 			expectedCode:   200,
 			expectedOutput: string(testModelBytes),
@@ -124,7 +133,7 @@ func TestGetBook(t *testing.T) {
 		},
 		{
 			name:           "database down",
-			id:             "0",
+			id:             fmt.Sprintf("%v", testModel.ID),
 			action:         func(db *gorm.DB) { db.Close() },
 			expectedCode:   500,
 			expectedOutput: "",
@@ -136,11 +145,6 @@ func TestGetBook(t *testing.T) {
 		t.Run(test.name, func(*testing.T) {
 			db, _ := dbservices.GetDB(cfg)
 			defer db.Close()
-
-			// insert
-			db = db.Create(&testModel)
-			db.DB().Exec(fmt.Sprintf("UPDATE books SET id = 0 WHERE id = %v;", testModel.Model.ID))
-
 			router := GetRouter(cfg, db)
 
 			// set
@@ -149,22 +153,9 @@ func TestGetBook(t *testing.T) {
 			r, _ := http.NewRequest("GET", fmt.Sprintf("/api/v1/books/%v", test.id), nil)
 			router.ServeHTTP(w, r)
 
-			// clean up
-			db, _ = dbservices.GetDB(cfg)
-			defer db.Close()
-			db.DB().Exec("DELETE FROM books WHERE id = 0;")
-
 			// check
 			if test.expectedOutput != "" {
-				var m1 models.Book
-				json.Unmarshal([]byte(test.expectedOutput), &m1)
-
-				var m2 models.Book
-				json.Unmarshal(w.Body.Bytes(), &m2)
-
-				m2.UpdatedAt = m1.UpdatedAt
-
-				assert.Equal(t, m1, m2)
+				assert.Equal(t, test.expectedOutput, w.Body.String())
 			}
 			assert.Equal(t, test.expectedCode, w.Code)
 		})
@@ -177,54 +168,44 @@ func TestNewBook(t *testing.T) {
 	cfg.Log.Output = nilWriter{}
 
 	testBody := `{"sku":"test","title":"test","author":"test","price":0}`
-	invalidBody1 := `{"sku":"test",title":"test","author":"test","price":0}`
+	invalidBody1 := `{"sku":"######","title":"test","author":"test","price":0}`
 	invalidBody2 := `{"sku":"test","author":"test","price":0}`
 	invalidBody3 := `test`
 
 	// tests table
 	tests := []struct {
 		name         string
-		actionBefore func(*gorm.DB)
-		actionAfter  func(*gorm.DB)
+		action       func(*gorm.DB)
 		body         string
 		expectedCode int
 	}{
 		{
 			name:         "ok",
-			actionBefore: func(db *gorm.DB) {},
-			actionAfter:  func(db *gorm.DB) {},
+			action:       func(db *gorm.DB) {},
 			body:         testBody,
 			expectedCode: 200,
 		},
 		{
-			name: "invalid model validation",
-			actionBefore: func(db *gorm.DB) {
-				db.DB().Exec(`INSERT INTO books (sku,title,author,price) VALUES ('test','test','test',0);`)
-			},
-			actionAfter: func(db *gorm.DB) {
-				db.DB().Exec(`DELETE FROM books WHERE sku = 'test';`)
-			},
+			name:         "invalid model validation",
+			action:       func(db *gorm.DB) {},
 			body:         invalidBody1,
 			expectedCode: 400,
 		},
 		{
 			name:         "invalid model missing required",
-			actionBefore: func(db *gorm.DB) {},
-			actionAfter:  func(db *gorm.DB) {},
+			action:       func(db *gorm.DB) {},
 			body:         invalidBody2,
 			expectedCode: 400,
 		},
 		{
 			name:         "invalid model wrong data type",
-			actionBefore: func(db *gorm.DB) {},
-			actionAfter:  func(db *gorm.DB) {},
+			action:       func(db *gorm.DB) {},
 			body:         invalidBody3,
 			expectedCode: 400,
 		},
 		{
 			name:         "database down",
-			actionBefore: func(db *gorm.DB) { db.Close() },
-			actionAfter:  func(db *gorm.DB) {},
+			action:       func(db *gorm.DB) { db.Close() },
 			body:         testBody,
 			expectedCode: 500,
 		},
@@ -240,22 +221,16 @@ func TestNewBook(t *testing.T) {
 			// set
 			w := httptest.NewRecorder()
 			r, _ := http.NewRequest("POST", "/api/v1/books", strings.NewReader(test.body))
-			test.actionBefore(db)
+			test.action(db)
 			router.ServeHTTP(w, r)
-			test.actionAfter(db)
-
-			// success
-			if w.Code == 200 {
-				var b models.Book
-				db.Where("sku = 'test'").First(&b)
-				assert.Equal(t, true, *b.Title == "test")
-			}
 
 			// clean up
 			var m models.Book
-			json.Unmarshal(w.Body.Bytes(), &m)
-			if !(cmp.Equal(m, models.Book{})) {
-				db.Unscoped().Delete(&m)
+			err := json.Unmarshal(w.Body.Bytes(), &m)
+			if err == nil {
+				if !(cmp.Equal(m, models.Book{})) {
+					db.Unscoped().Delete(&m)
+				}
 			}
 
 			// check
@@ -269,35 +244,9 @@ func TestUpdateBook(t *testing.T) {
 	cfg := config.GetConfig()
 	cfg.Log.Output = nilWriter{}
 
-	// test model
-	var (
-		sku    = "test"
-		title  = "test"
-		author = "test"
-		price  = 0.0
-	)
-	testModel := models.Book{
-		SKU:    &sku,
-		Title:  &title,
-		Author: &author,
-		Price:  &price,
-	}
-	var (
-		sku2    = "test2"
-		title2  = "test2"
-		author2 = "test2"
-		price2  = 0.0
-	)
-	testModel2 := models.Book{
-		SKU:    &sku2,
-		Title:  &title2,
-		Author: &author2,
-		Price:  &price2,
-	}
-
 	// updates
-	validModel := `{"sku":"test3"}`
-	invalidModel := `{"sku":"test"}`
+	validModel := `{"sku":"test"}`
+	invalidModel := `{"sk":"######"}`
 
 	// tests table
 	tests := []struct {
@@ -313,7 +262,7 @@ func TestUpdateBook(t *testing.T) {
 			expectedCode: 200,
 		},
 		{
-			name:         "invalid model duplicate",
+			name:         "invalid model validation",
 			action:       func(db *gorm.DB) {},
 			body:         invalidModel,
 			expectedCode: 400,
@@ -331,33 +280,13 @@ func TestUpdateBook(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			db, _ := dbservices.GetDB(cfg)
 			defer db.Close()
-
-			// insert
-			db = db.Create(&testModel)
-			db.DB().Exec(fmt.Sprintf("UPDATE books SET id = 0 WHERE id = %v;", testModel.Model.ID))
-			db = db.Create(&testModel2)
-			db.DB().Exec(fmt.Sprintf("UPDATE books SET id = 1 WHERE id = %v;", testModel2.Model.ID))
-
 			router := GetRouter(cfg, db)
 
 			// set
-			test.action(db)
 			w := httptest.NewRecorder()
-			r, _ := http.NewRequest("PUT", "/api/v1/books/1", strings.NewReader(test.body))
+			r, _ := http.NewRequest("PUT", fmt.Sprintf("/api/v1/books/%d", 0), strings.NewReader(test.body))
+			test.action(db)
 			router.ServeHTTP(w, r)
-
-			// success
-			if w.Code == 200 {
-				var b models.Book
-				db.Where("id = 1").First(&b)
-				assert.Equal(t, true, *b.SKU == "test3")
-			}
-
-			// clean up
-			db, _ = dbservices.GetDB(cfg)
-			defer db.Close()
-			db.DB().Exec("DELETE FROM books WHERE id = 0;")
-			db.DB().Exec("DELETE FROM books WHERE id = 1;")
 
 			// check
 			assert.Equal(t, test.expectedCode, w.Code)
@@ -366,91 +295,6 @@ func TestUpdateBook(t *testing.T) {
 }
 
 func TestRemoveBook(t *testing.T) {
-	gin.SetMode(gin.ReleaseMode)
-	cfg := config.GetConfig()
-	cfg.Log.Output = nilWriter{}
-
-	// test model
-	var (
-		sku         = "test"
-		title       = "test"
-		author      = "test"
-		description = "test"
-		price       = 0.0
-	)
-	testModel := models.Book{
-		Model: models.Model{
-			CreatedAt: time.Unix(0, 0),
-			UpdatedAt: time.Unix(0, 0),
-		},
-		SKU:         &sku,
-		Title:       &title,
-		Author:      &author,
-		Description: description,
-		Price:       &price,
-	}
-
-	// tests table
-	tests := []struct {
-		name         string
-		id           string
-		action       func(*gorm.DB)
-		expectedCode int
-	}{
-		{
-			name:         "ok",
-			id:           "0",
-			action:       func(db *gorm.DB) {},
-			expectedCode: 200,
-		},
-		{
-			name:         "invalid id non-parseable",
-			id:           "non",
-			action:       func(db *gorm.DB) {},
-			expectedCode: 400,
-		},
-		{
-			name:         "database down",
-			id:           "0",
-			action:       func(db *gorm.DB) { db.Close() },
-			expectedCode: 500,
-		},
-	}
-
-	// run tests
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			db, _ := dbservices.GetDB(cfg)
-			defer db.Close()
-
-			// insert
-			db = db.Create(&testModel)
-			db.DB().Exec(fmt.Sprintf("UPDATE books SET id = 0 WHERE id = %v;", testModel.Model.ID))
-
-			router := GetRouter(cfg, db)
-
-			// set
-			test.action(db)
-			w := httptest.NewRecorder()
-			r, _ := http.NewRequest("DELETE", fmt.Sprintf("/api/v1/books/%v", test.id), nil)
-			router.ServeHTTP(w, r)
-
-			// success
-			if w.Code == 200 {
-				var b models.Book
-				db.Unscoped().Where("id = 0").First(&b)
-				assert.Equal(t, true, b.DeletedAt != nil)
-			}
-
-			// clean up
-			db, _ = dbservices.GetDB(cfg)
-			defer db.Close()
-			db.DB().Exec("DELETE FROM books WHERE id = 0;")
-
-			// check
-			assert.Equal(t, test.expectedCode, w.Code)
-		})
-	}
 }
 
 func TestRecoverBook(t *testing.T) {
