@@ -4,7 +4,6 @@ import (
 	"regexp"
 	"strconv"
 	"tommychu/workdir/026_api-example-v2/app/models"
-	"tommychu/workdir/026_api-example-v2/app/services/dbservices"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -21,7 +20,8 @@ func GetAllBooks(c *gin.Context) {
 	db := c.Value("db").(*gorm.DB)
 
 	// get books
-	books, errs := dbservices.ReadAllBooks(db)
+	var books []models.Book
+	books, errs := books, db.Find(&books).GetErrors()
 	if len(errs) != 0 {
 		c.JSON(500, HandleErrs(errs...))
 		return
@@ -51,7 +51,8 @@ func GetBook(c *gin.Context) {
 	}
 
 	// get the book
-	book, errs := dbservices.ReadBook(db, id)
+	var book models.Book
+	errs := db.First(&book, id).GetErrors()
 	if len(errs) == 1 && errs[0].Error() == "record not found" {
 		c.JSON(400, HandleErrs(errs...))
 		return
@@ -86,7 +87,7 @@ func NewBook(c *gin.Context) {
 	}
 
 	// create book
-	b, errs := dbservices.CreateBook(db, book)
+	errs := db.Create(&book).GetErrors()
 	if len(errs) != 0 {
 
 		expString := `(.*duplicate key value.*)|(.*violates not-null constraint.*)`
@@ -102,7 +103,7 @@ func NewBook(c *gin.Context) {
 	}
 
 	// success
-	c.JSON(200, b)
+	c.JSON(200, book)
 }
 
 // UpdateBook updates a book.
@@ -134,7 +135,8 @@ func UpdateBook(c *gin.Context) {
 	}
 
 	// update
-	book, errs := dbservices.UpdateBook(db, id, book)
+	var b models.Book
+	errs := db.First(&b, id).Model(&b).Updates(book).GetErrors()
 	if len(errs) != 0 {
 
 		expString := `(.*duplicate key value.*)`
@@ -150,7 +152,7 @@ func UpdateBook(c *gin.Context) {
 	}
 
 	// success
-	c.JSON(200, book)
+	c.JSON(200, b)
 }
 
 // RemoveBook deletes a book.
@@ -172,7 +174,8 @@ func RemoveBook(c *gin.Context) {
 	}
 
 	// deletiton
-	errs := dbservices.DeleteBook(db, id)
+	var book models.Book
+	errs := db.Delete(&book, id).GetErrors()
 	if len(errs) != 0 {
 		c.JSON(500, HandleErrs(errs...))
 		return
@@ -203,7 +206,8 @@ func RecoverBook(c *gin.Context) {
 	}
 
 	// recover book
-	book, errs := dbservices.RecoverBook(db, id)
+	var book models.Book
+	errs := db.Unscoped().Where("id = ?", id).First(&book).Update("deleted_at", nil).GetErrors()
 	if len(errs) != 0 {
 
 		expString := `(.*not found.*)`

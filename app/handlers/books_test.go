@@ -302,6 +302,7 @@ func TestUpdateBook(t *testing.T) {
 	// tests table
 	tests := []struct {
 		name         string
+		id           string
 		body         string
 		action       func(*gorm.DB)
 		expectedCode int
@@ -309,18 +310,35 @@ func TestUpdateBook(t *testing.T) {
 		{
 			name:         "ok",
 			action:       func(db *gorm.DB) {},
+			id:           "1",
 			body:         validModel,
 			expectedCode: 200,
 		},
 		{
+			name:         "invalid id",
+			action:       func(db *gorm.DB) {},
+			id:           "test",
+			body:         validModel,
+			expectedCode: 400,
+		},
+		{
 			name:         "invalid model duplicate",
 			action:       func(db *gorm.DB) {},
+			id:           "1",
 			body:         invalidModel,
+			expectedCode: 400,
+		},
+		{
+			name:         "invalid model type",
+			action:       func(db *gorm.DB) {},
+			id:           "1",
+			body:         "test",
 			expectedCode: 400,
 		},
 		{
 			name:         "database down",
 			action:       func(db *gorm.DB) { db.Close() },
+			id:           "1",
 			body:         validModel,
 			expectedCode: 500,
 		},
@@ -343,7 +361,7 @@ func TestUpdateBook(t *testing.T) {
 			// set
 			test.action(db)
 			w := httptest.NewRecorder()
-			r, _ := http.NewRequest("PUT", "/api/v1/books/1", strings.NewReader(test.body))
+			r, _ := http.NewRequest("PUT", fmt.Sprintf("/api/v1/books/%s", test.id), strings.NewReader(test.body))
 			router.ServeHTTP(w, r)
 
 			// success
@@ -490,6 +508,12 @@ func TestRecoverBook(t *testing.T) {
 		{
 			name:         "invalid id non-parseable",
 			id:           "non",
+			action:       func(db *gorm.DB) {},
+			expectedCode: 400,
+		},
+		{
+			name:         "invalid id non-existing",
+			id:           "-1",
 			action:       func(db *gorm.DB) {},
 			expectedCode: 400,
 		},

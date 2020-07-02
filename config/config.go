@@ -6,6 +6,8 @@ import (
 	"time"
 )
 
+const DEBUG_MODE = false
+
 // Config is a application config struct.
 type Config struct {
 	Log *LogConfig

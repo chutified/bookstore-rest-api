@@ -8,7 +8,7 @@ GET /books
 // GET one by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-GET /books/382
+GET /books/778
 
 // CREATE 1
 http://localhost:8081/api/v1
@@ -51,15 +51,15 @@ http://localhost:8081/api/v1
 Content-Type: application/json
 PUT /books/496
 {
-    "sku":"7895"
+    "sku":"78787987878"
 }
 
 // DELETE by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-DELETE /books/496
+DELETE /books/778
 
 // RECOVER by id
 http://localhost:8081/api/v1
 Content-Type: application/json
-POST /books/45/recover
+POST /books/778/recover

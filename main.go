@@ -1,14 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"tommychu/workdir/026_api-example-v2/app"
 	"tommychu/workdir/026_api-example-v2/config"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 // @Title Bookstore API example with Gin
@@ -22,6 +20,10 @@ import (
 // @Host localhost:8081
 // @BasePath /api/v1
 func main() {
+	if !config.DEBUG_MODE {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	cfg := config.GetConfig()
 
 	// set app
@@ -30,13 +32,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() {
-		log.Fatal(a.Close())
-	}()
-
-	// documentation
-	url := ginSwagger.URL(fmt.Sprintf("http://localhost%s/swagger/doc.json", cfg.Srv.Addr)) // The url pointing to API definition
-	a.Router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
+	defer log.Fatal(a.Close())
 
 	log.Panic(a.Run())
 }

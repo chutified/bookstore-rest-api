@@ -5,3 +5,5 @@ makefile
 installation
 dependencies (technologies)
 coverage
+models
+docs location

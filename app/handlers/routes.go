@@ -1,11 +1,14 @@
 package handlers
 
 import (
+	"fmt"
 	"tommychu/workdir/026_api-example-v2/app/middlewares"
 	"tommychu/workdir/026_api-example-v2/config"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // GetRouter returns the set up gin router.
@@ -33,6 +36,15 @@ func GetRouter(cfg *config.Config, db *gorm.DB) *gin.Engine {
 		v1.DELETE("/books/:id", RemoveBook)
 		v1.POST("/books/:id/recover", RecoverBook)
 	}
+
+	// ping
+	r.GET("/ping", func(c *gin.Context) {
+		c.String(200, "pong")
+	})
+
+	// documentation
+	url := ginSwagger.URL(fmt.Sprintf("http://localhost%s/swagger/doc.json", cfg.Srv.Addr)) // The url pointing to API definition
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	return r
 }

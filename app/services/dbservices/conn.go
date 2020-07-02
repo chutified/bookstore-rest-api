@@ -21,7 +21,10 @@ func GetDB(cfg *config.Config) (*gorm.DB, error) {
 	if err != nil {
 		return nil, fmt.Errorf("could not Initialize a db connection: %v", err)
 	}
-	db.LogMode(false) // disable annoying database logs
+
+	if !config.DEBUG_MODE {
+		db.LogMode(false)
+	}
 	return dbMigrate(db), nil
 }
 
