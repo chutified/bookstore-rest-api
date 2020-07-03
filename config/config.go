@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )
 
@@ -25,7 +26,7 @@ type Config struct {
 // GetConfig returns application config struct.
 func GetConfig() (*Config, error) {
 
-	cfg, err := fromFile()
+	cfg, err := fromFile("/settings.yaml")
 	if err != nil {
 		return nil, err
 	}
@@ -33,10 +34,10 @@ func GetConfig() (*Config, error) {
 	return cfg, nil
 }
 
-func fromFile() (*Config, error) {
+func fromFile(yamlPath string) (*Config, error) {
 
 	// read file
-	configPath := path.Join(rootDir(), "/settings.yaml")
+	configPath := path.Join(rootDir(), yamlPath)
 	bs, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		return nil, err
@@ -44,7 +45,7 @@ func fromFile() (*Config, error) {
 
 	// get cfg
 	var cfg Config
-	err = yaml.Unmarshal(bs, &cfg)
+	err = yaml.UnmarshalStrict(bs, &cfg)
 	if err != nil {
 		return nil, err
 	}
@@ -60,19 +61,19 @@ func fromFile() (*Config, error) {
 	// set server
 	cfg.Srv.ReadTimeout, err = time.ParseDuration(cfg.Srv.ReadTimeoutX)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "invalid read_timeout")
 	}
 	cfg.Srv.ReadHeaderTimeout, err = time.ParseDuration(cfg.Srv.ReadHeaderTimeoutX)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "invalid read_header_timeout")
 	}
 	cfg.Srv.WriteTimeout, err = time.ParseDuration(cfg.Srv.WriteTimeoutX)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "invalid write_timeout")
 	}
 	cfg.Srv.IdleTimeout, err = time.ParseDuration(cfg.Srv.IdleTimeoutX)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "invalid idle_timeout")
 	}
 
 	return &cfg, nil

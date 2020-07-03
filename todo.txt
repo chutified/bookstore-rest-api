@@ -1,4 +1,5 @@
 dockerfile
+file logging
 
 README
 docs location

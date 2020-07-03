@@ -1,0 +1,20 @@
+---
+logging:
+  destination: STD_OUT
+
+server:
+  addres: ':8081'
+  read_timeout: 1500ms
+  read_header_timeout: 800ms
+  write_timeout: 3000ms
+  idle_timeout: 6000ms
+  max_header_bytes: 1048576
+
+database:
+  host: localhost
+  port: 5432
+  db_name: project_01
+  username: user_00
+  password: 159258
+
+debug_mode: false
