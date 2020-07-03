@@ -39,7 +39,7 @@ http://localhost:8081/api/v1
 Content-Type: application/json
 POST /books
 {
-"sku":"564",
+"sku":"458965",
 "title":"Of Mice and Men",
 "author":"John Steinbeck",
 "description":"George is \"small and quick of face\"; Lennie, a man of tremendous size, has the mind of a young child. Yet they have formed a \"family,\" clinging together in the face of loneliness and alienation. They hustle work when they can, living a hand-to-mouth existence. For George and Lennie have a plan: to own an acre of land and a shack they can call their own. When they land jobs on a ranch, the fulfillment of their dream seems to be within their grasp. But even George cannot guard Lennie from the provocations of a flirtatious woman, nor predict the consequences of Lennie's unswerving obedience...",
@@ -51,7 +51,7 @@ http://localhost:8081/api/v1
 Content-Type: application/json
 PUT /books/496
 {
-    "sku":"99999999"
+    price: 22.99
 }
 
 // DELETE by id
