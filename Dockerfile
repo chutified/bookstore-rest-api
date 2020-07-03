@@ -12,7 +12,6 @@ ENV GIN_MODE=release
 WORKDIR /go/src/local/bookstore-api
 COPY . .
 RUN go mod download
-#COPY vendor/* /go/src/
 
 RUN go build -o main .
 CMD ["./main"]
