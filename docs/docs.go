@@ -7,10 +7,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"log"
 	"strings"
 
+	"github.com/alecthomas/template"
 	"github.com/chutified/bookstore-api/config"
 	"github.com/swaggo/swag"
 )

@@ -1,4 +1,4 @@
-FROM golang
+FROM golang:latest
 
 LABEL maintainer="tommychu2256@gmail.com"
 
@@ -12,9 +12,12 @@ ENV GIN_MODE=release
 
 RUN mkdir /app
 WORKDIR /app
-COPY . /app
 
-RUN install github.com/chutified/bookstore-api
-RUN go build -o bookstore-api .
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+ADD . .
 
-CMD ["/app/bookstore-api"]
+RUN go build -o main .
+
+CMD ["/app/main"]
