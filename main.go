@@ -41,7 +41,6 @@ func main() {
 		log.Fatal(a.Close())
 	}()
 
-	fmt.Fprintf(a.Log, "Listening and serving HTTP on %s\n", a.Srv.Addr)
 	fmt.Fprintf(a.Log, "API Documentation: http://localhost%s/swagger/index.html\n", a.Srv.Addr)
 	log.Panic(a.Run())
 }
