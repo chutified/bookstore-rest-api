@@ -7,7 +7,7 @@ The entire API is documented with Swagger 2.0 using the <a href="https://www.git
 Everything is easily built and run with the `make` commands: `test`, `install`, `docker-build`, `docker-run`.
 For simplicity, the API settings can be set in a single file: `settings.yaml`.
 
-_(This API support postgres DB only)_
+_(This API supports the postgres DB only)_
 
 __Default:__
 ```
