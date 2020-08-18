@@ -3,7 +3,6 @@ FROM golang:alpine
 LABEL maintainer="tommychu2256@gmail.com"
 
 ENV GO111MODULE="on"
-ENV GOPROXY="https://proxy.golang.org,direct"
 
 ENV PORT=8081
 EXPOSE $PORT
