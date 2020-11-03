@@ -1,13 +1,13 @@
 # Bookstore REST API example
 The Bookstore project is a great example of a basic REST API.
 
-The entire API is documented with Swagger 2.0 using the <a href="https://www.github.com/swaggo/swag" target="_blank">swaggo/swag</a> package. The application also contains fully automated tests for unit testing (with 100% coverage) and a Dockerfile for the containerization.
+The entire API is documented with Swagger 2.0 using the <a href="https://www.github.com/swaggo/swag" target="_blank">swaggo/swag</a> package. The application also contains fully automated tests for unit testing (with 100% coverage) and a Dockerfile for containerization.
 
 ### Settings
-Everything can be easily built and run with the `make` commands: `test`, `install`, `docker-build`, `docker-run`.
-For simplicity, the API settings can be set in a single file: `settings.yaml`.
+Everything can be easily built and launched with the `make` commands: `test`, `install`, `docker-build`, `docker-run`.
+For the simplicity, the API settings can be set in a single file: `settings.yaml`.
 
-_(This API supports the PostgreSQL only)_
+_(This API supports PostgreSQL engine only)_
 
 __Default:__
 ```
