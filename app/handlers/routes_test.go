@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/chutified/bookstore-api/app/dbservices"
-	"github.com/chutified/bookstore-api/config"
+	"github.com/chutommy/bookstore-api/app/dbservices"
+	"github.com/chutommy/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	"gopkg.in/go-playground/assert.v1"
 )

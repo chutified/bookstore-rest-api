@@ -4,9 +4,9 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/chutified/bookstore-api/app/dbservices"
-	"github.com/chutified/bookstore-api/app/handlers"
-	"github.com/chutified/bookstore-api/config"
+	"github.com/chutommy/bookstore-api/app/dbservices"
+	"github.com/chutommy/bookstore-api/app/handlers"
+	"github.com/chutommy/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )

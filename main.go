@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/chutified/bookstore-api/app"
-	"github.com/chutified/bookstore-api/config"
-	_ "github.com/chutified/bookstore-api/docs"
+	"github.com/chutommy/bookstore-api/app"
+	"github.com/chutommy/bookstore-api/config"
+	_ "github.com/chutommy/bookstore-api/docs"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

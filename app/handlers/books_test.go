@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chutified/bookstore-api/app/dbservices"
-	"github.com/chutified/bookstore-api/app/models"
-	"github.com/chutified/bookstore-api/config"
+	"github.com/chutommy/bookstore-api/app/dbservices"
+	"github.com/chutommy/bookstore-api/app/models"
+	"github.com/chutommy/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jinzhu/gorm"

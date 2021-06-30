@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/chutified/bookstore-api/app/models"
+	"github.com/chutommy/bookstore-api/app/models"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 )

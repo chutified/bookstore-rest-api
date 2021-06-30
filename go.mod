@@ -1,4 +1,4 @@
-module github.com/chutified/bookstore-api
+module github.com/chutommy/bookstore-api
 
 go 1.14
 

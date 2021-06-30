@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chutified/bookstore-api/config"
+	"github.com/chutommy/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"gopkg.in/go-playground/assert.v1"

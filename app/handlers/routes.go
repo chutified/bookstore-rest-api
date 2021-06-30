@@ -3,8 +3,8 @@ package handlers
 import (
 	"fmt"
 
-	"github.com/chutified/bookstore-api/app/middlewares"
-	"github.com/chutified/bookstore-api/config"
+	"github.com/chutommy/bookstore-api/app/middlewares"
+	"github.com/chutommy/bookstore-api/config"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
 	swaggerFiles "github.com/swaggo/files"

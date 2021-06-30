@@ -75,11 +75,11 @@ The examples of the HTTP requests are in `example/requests.rest`.
 
 ### Test results
 ```
-ok  	github.com/chutified/bookstore-api/app	(cached)	coverage: 100.0% of statements
-ok  	github.com/chutified/bookstore-api/app/dbservices	(cached)	coverage: 100.0% of statements
-ok  	github.com/chutified/bookstore-api/app/handlers	(cached)	coverage: 100.0% of statements
-ok  	github.com/chutified/bookstore-api/app/middlewares	(cached)	coverage: 100.0% of statements
-ok  	github.com/chutified/bookstore-api/config	(cached)	coverage: 100.0% of statements
+ok  	github.com/chutommy/bookstore-api/app	(cached)	coverage: 100.0% of statements
+ok  	github.com/chutommy/bookstore-api/app/dbservices	(cached)	coverage: 100.0% of statements
+ok  	github.com/chutommy/bookstore-api/app/handlers	(cached)	coverage: 100.0% of statements
+ok  	github.com/chutommy/bookstore-api/app/middlewares	(cached)	coverage: 100.0% of statements
+ok  	github.com/chutommy/bookstore-api/config	(cached)	coverage: 100.0% of statements
 ```
 
 ### Directory tree

@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 
-	"github.com/chutified/bookstore-api/app/models"
+	"github.com/chutommy/bookstore-api/app/models"
 )
 
 // HandleErrs returns errors in AppErrors.
